@@ -84,7 +84,7 @@ include('./functions/common.php');
             <div class="col-md-10">
                 <div class="row">
                     <?php
-                        getProducts();
+                        get_all_products();
                         get_unique_categories();
                         get_unique_brands();
                     ?>

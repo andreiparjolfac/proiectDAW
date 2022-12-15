@@ -40,7 +40,7 @@
                     <p class="text-light text-center">Admin name</p>
                 </div>
                 <div class="button text-center">
-                    <button class="my-3 border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">Insert Products</a></button>
+                    <button class="my-3 border-0"><a href="insert_product.php" class="nav-link text-light bg-info my-1 p-2">Insert Product</a></button>
                     <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">View Products</a></button>
                     <button class="border-0"><a href="index.php?insert_category" class="nav-link text-light bg-info my-1 p-2">Insert Category</a></button>
                     <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">View Categories</a></button>
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="container my-5">
+        <div class="container my-3">
             <?php
             if(isset($_GET['insert_category'])){
                 include('insert_category.php');
