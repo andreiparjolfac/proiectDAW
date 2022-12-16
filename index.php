@@ -46,19 +46,27 @@ include('./functions/common.php');
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup>1</sup></a>
+                            <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-shopping"></i><sup><?php
+                            echo cart_item_num();
+                            ?></sup></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Total price:10</a>
+                            <a class="nav-link" href="#">Total price: <?php
+                            total_cart_price();
+                            ?></a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Search</button>
+                    <form class="d-flex" role="search" action="search_product.php" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
+                        <input type="submit" value="Search" class="btn btn-outline-light" name="search_data_product">
                     </form>
                 </div>
             </div>
         </nav>
+
+        <?php
+        cart();
+        ?>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">

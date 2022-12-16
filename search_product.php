@@ -56,14 +56,13 @@ include('./functions/common.php');
                             ?></a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Search</button>
+                    <form class="d-flex" role="search" action="search_product.php" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
+                        <input type="submit" value="Search" class="btn btn-outline-light" name="search_data_product">
                     </form>
                 </div>
             </div>
         </nav>
-
         <?php
         cart();
         ?>
@@ -91,7 +90,7 @@ include('./functions/common.php');
             <div class="col-md-10">
                 <div class="row">
                     <?php
-                    get_all_products();
+                    search_product();
                     get_unique_categories();
                     get_unique_brands();
                     ?>
