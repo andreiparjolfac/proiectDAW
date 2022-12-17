@@ -19,10 +19,10 @@ include('./functions/common.php');
 
     <link rel="stylesheet" href="style.css">
     <style>
-        .cart_img{
-    width: 80px;
-    height: 80px;
-}
+        .cart_img {
+            width: 80px;
+            height: 80px;
+        }
     </style>
 </head>
 
@@ -46,15 +46,15 @@ include('./functions/common.php');
                             <a class="nav-link" href="display_all.php">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Register</a>
+                        <a class="nav-link" href="user_registration.php">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-shopping"></i><sup><?php
-                            echo cart_item_num();
-                            ?></sup></a>
+                                                                                                                echo cart_item_num();
+                                                                                                                ?></sup></a>
                         </li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@ include('./functions/common.php');
                     <a class="nav-link" href="#">Welcome Guest</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                <a class="nav-link" href="user_login.php">Login</a>
                 </li>
             </ul>
         </nav>
@@ -87,62 +87,116 @@ include('./functions/common.php');
 
         <div class="container">
             <div class="row">
-                <table class="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th>Product Title</th>
-                            <th>Product Image</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
-                            <th>Remove</th>
-                            <th colspan="2">Operations</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        global $con;
-                        $ip = getIPAddress();                       
-                        $result_query = mysqli_query($con,"select * from cart_details where ip_address='$ip'");
-                        while($row=mysqli_fetch_assoc($result_query)){
-                            $product_id = $row['product_id'];
-                            $product_quantity = $row['quantity'];
-                            $product= mysqli_fetch_assoc( mysqli_query($con,"select * from products where product_id=$product_id") );
-                            $product_title = $product['product_title'];
-                            $product_image1 = $product['product_image1'];
-                            $product_price = $product['product_price'];
-                            $total_price = $product_quantity * $product_price ;
-                            echo "
-                            <tr>
-                            <td>$product_title</td>
-                            <td><img src='./admin_area/product_images/$product_image1' class='cart_img' alt='$product_image1'></td>
-                            <td><input type='text' class='form-input w-50' name='' id='' value='$product_quantity'></td>
-                            <td>$total_price</td>
-                            <td><input type='checkbox' name='' id=''></td>
-                            <td>
-                                <button class='bg-info px-3 py-2 mx-3 border-0'>Update</button>
-                                <button class='bg-info px-3 py-2 mx-3 border-0'>Remove</button>
-                            </td>
-                        </tr>
-                            ";
+                <form action="cart.php" method="POST">
+                    <table class="table table-bordered text-center">
+                            <?php
+                            global $con;
+                            $ip = getIPAddress();
+                            $result_query = mysqli_query($con, "select * from cart_details where ip_address='$ip'");
+                            $num_of_products = mysqli_num_rows($result_query);
+                            if($num_of_products>0){
+                                echo "                        
+                                <thead>
+                                <tr>
+                                    <th>Product Title</th>
+                                    <th>Product Image</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Remove</th>
+                                    <th colspan='2'>Operations</th>
+                                </tr>
+                                </thead>";
+                            echo "<tbody>";
+                                while ($row = mysqli_fetch_assoc($result_query)) {
+                                        $product_id = $row['product_id'];
+                                        $product_quantity = $row['quantity'];
+                                        $product = mysqli_fetch_assoc(mysqli_query($con, "select * from products where product_id=$product_id"));
+                                        $product_title = $product['product_title'];
+                                        $product_image1 = $product['product_image1'];
+                                        $product_price = $product['product_price'];
+                                        $total_price = $product_quantity * $product_price;
+                                        echo "
+                                    <tr>
+                                    <td>$product_title</td>
+                                    <td><img src='./admin_area/product_images/$product_image1' class='cart_img' alt='$product_image1'></td>
+                                    <td><input type='text' class='form-input w-50' name='quantity' id='' value='$product_quantity'></td>
+                                    <td>$total_price</td>
+                                    <td><input type='checkbox' name='checkeditems[]' id='' value='$product_id'></td>
+                                    <td>
+                                        <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Update Cart' name='update_cart'>
+                                    </td>
+                                </tr>
+                                    ";
+                                }
+                            }else{
+                                echo "<h2 class='text-danger text-center'>Cart is empty!</h2>";
+                            }
+                            
+                            if (isset($_POST['update_cart'])) {
+                                $quantity = $_POST['quantity'];
+                                mysqli_query($con, "update cart_details set quantity = $quantity where ip_address='$ip' and product_id=$product_id");
+                                echo "<script>
+                            window.open('cart.php','_self');
+                            </script>";
+                            }
 
-                        }
+                            if (isset($_POST['remove_cart'])) {
+                                if (isset($_POST['checkeditems'])) {
+                                    $product_id_arr = $_POST['checkeditems'];
+                                    foreach($product_id_arr as $remove_id){
+                                        $result_delete=mysqli_query($con,"delete from cart_details where ip_address='$ip' and product_id=$remove_id");
+                                        if($result_delete){
+                                            echo "<script>
+                                            window.open('cart.php','_self');
+                                            </script>";
+                                        }
+                                    }
+                                }
+                            }
 
-                        ?>
-                    </tbody>
-                </table>
-                <div class="d-flex mb-5">
-                    <h4 class="px-3">Subtotal: <strong class="text-info"> <?php
-                    total_cart_price();
-                    ?></strong></h4>
-                    <a href="index.php"><button class="bg-info px-3 py-2 mx-3 border-0">Continue Shopping</button></a>
-                    <a href="#"><button class="bg-secondary text-light px-3 py-2 border-0">Checkout</button></a>
-                </div>
+
+
+                            ?>
+                        </tbody>
+                    </table>
+                    <?php
+                    if($num_of_products>0){
+                    echo "
+                    <div class='d-flex mb-5'>
+                        <h4 class='px-3'>Subtotal: <strong class='text-info'> $total_price </strong></h4>
+                        <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Continue Shopping' name='continue_shopping'>
+                        <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Checkout' name='checkout'>
+                        <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Remove selected products' name='remove_cart'>
+                    </div>
+                    ";
+                    }else{
+                        echo "
+                        <div class='d-flex mb-5'>
+
+                        <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Continue Shopping' name='continue_shopping'>
+
+                        </div>";
+                    }
+
+                    if(isset($_POST['continue_shopping'])){
+                        echo "<script>
+                        window.open('index.php','_self');
+                        </script>";
+                    }
+
+                    if(isset($_POST['checkout'])){
+                        echo "<script>
+                        window.open('checkout.php','_self');
+                        </script>";
+                    }
+                    ?>
+                </form>
             </div>
         </div>
 
 
         <?php
-            include("./includes/footer.php");
+        include("./includes/footer.php");
         ?>
     </div>
     <!-- bootstrap js link -->

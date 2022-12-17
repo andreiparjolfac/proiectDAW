@@ -1,6 +1,6 @@
 <?php
 include('./includes/connect.php');
-include('./functions/common.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ include('./functions/common.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce Website</title>
+    <title>Checkout Page</title>
     <!-- bootstrap css link -->
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -45,16 +45,6 @@ include('./functions/common.php');
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-shopping"></i><sup><?php
-                            echo cart_item_num();
-                            ?></sup></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Total price: <?php
-                            total_cart_price();
-                            ?></a>
-                        </li>
                     </ul>
                     <form class="d-flex" role="search" action="search_product.php" method="GET">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
@@ -63,16 +53,15 @@ include('./functions/common.php');
                 </div>
             </div>
         </nav>
-        <?php
-        cart();
-        ?>
+
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Welcome Guest</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="user_login.php">Login</a>
+                    <a class="nav-link" href="#">Login</a>
                 </li>
             </ul>
         </nav>
@@ -87,43 +76,18 @@ include('./functions/common.php');
         </div>
 
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="row">
                     <?php
-                    view_details();
-                    get_unique_categories();
-                    get_unique_brands();
+                    if(!isset($_SESSION['username'])){
+                        include("user_login.php");
+                    }else{
+                        include("payment.php");
+                    }
                     ?>
                 </div>
             </div>
-            <div class="col-md-2 bg-secondary p-0">
-                <ul class="navbar-nav me-auto text-center">
-                    <li class="nav-item bg-info">
-                        <a href="#" class="nav-link text-light">
-                            <h4>
-                                Brands
-                            </h4>
-                        </a>
-                    </li>
-                    <?php
-                    getBrands();
-                    ?>
 
-                </ul>
-
-                <ul class="navbar-nav me-auto text-center">
-                    <li class="nav-item bg-info">
-                        <a href="#" class="nav-link text-light">
-                            <h4>
-                                Categories
-                            </h4>
-                        </a>
-                    </li>
-                    <?php
-                    getCategories();
-                    ?>
-                </ul>
-            </div>
         </div>
         <?php
         include("./includes/footer.php");
