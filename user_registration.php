@@ -90,8 +90,8 @@ if(isset($_POST['user_register'])){
     }else if($user_password!=$conf_user_password){
         echo "<script>alert('Passwords do not match!');</script>";
     }else{
-        
-    $insert_query = "insert into user_table (user_username,user_email,user_password,user_image,user_ip,user_address,user_mobile) values ('$user_username','$user_email','$user_password','$user_image','$user_ip','$user_address','$user_contact')";
+    $hash_password = password_hash($user_password,PASSWORD_DEFAULT);
+    $insert_query = "insert into user_table (user_username,user_email,user_password,user_image,user_ip,user_address,user_mobile) values ('$user_username','$user_email','$hash_password','$user_image','$user_ip','$user_address','$user_contact')";
 
     $result_query = mysqli_query($con,$insert_query);
     if(!$result_query){
@@ -101,5 +101,16 @@ if(isset($_POST['user_register'])){
     }
     }
 
+    $select_cart_items = "select * from cart_details where ip_address='$user_ip'";
+
+    if(mysqli_num_rows(mysqli_query($con,$select_cart_items))>0){
+        echo "<script>alert('You have items in your cart.');
+        window.open('checkout.php','_self');
+        </script>";
+    }else{
+        echo "<script>
+        window.open('index.php','_self');
+        </script>";
+    }
 }
 ?>

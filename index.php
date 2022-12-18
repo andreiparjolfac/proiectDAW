@@ -1,6 +1,7 @@
 <?php
 include('./includes/connect.php');
 include('./functions/common.php');
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -40,20 +41,20 @@ include('./functions/common.php');
                             <a class="nav-link" href="display_all.php">Products</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="user_registration.php">Register</a>
+                            <a class="nav-link" href="user_registration.php">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-shopping"></i><sup><?php
-                            echo cart_item_num();
-                            ?></sup></a>
+                                                                                                                echo cart_item_num();
+                                                                                                                ?></sup></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Total price: <?php
-                            total_cart_price();
-                            ?></a>
+                                                                        total_cart_price();
+                                                                        ?></a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search" action="search_product.php" method="GET">
@@ -70,12 +71,28 @@ include('./functions/common.php');
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Welcome Guest</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="user_login.php">Login</a>
-                </li>
+                <?php
+                if (!isset($_SESSION['username'])) {
+                    echo "                <li class='nav-item'>
+                                    <a class='nav-link' href='user_login.php'>Welcome Guest</a>
+                                </li>";
+                } else {
+                    $username=$_SESSION['username'];
+                    echo "                <li class='nav-item'>
+                                    <a class='nav-link' href='logout.php'>Welcome $username</a>
+                                </li>";
+                }
+                if (!isset($_SESSION['username'])) {
+                    echo "                <li class='nav-item'>
+                    <a class='nav-link' href='user_login.php'>Login</a>
+                </li>";
+                } else {
+                    echo "                <li class='nav-item'>
+                    <a class='nav-link' href='logout.php'>Logout</a>
+                </li>";
+                }
+                ?>
+
             </ul>
         </nav>
 
@@ -92,9 +109,9 @@ include('./functions/common.php');
             <div class="col-md-10">
                 <div class="row">
                     <?php
-                        getProducts();
-                        get_unique_categories();
-                        get_unique_brands();
+                    getProducts();
+                    get_unique_categories();
+                    get_unique_brands();
                     ?>
                 </div>
             </div>
@@ -108,7 +125,7 @@ include('./functions/common.php');
                         </a>
                     </li>
                     <?php
-                        getBrands();
+                    getBrands();
                     ?>
 
                 </ul>
@@ -122,13 +139,13 @@ include('./functions/common.php');
                         </a>
                     </li>
                     <?php
-                        getCategories();
+                    getCategories();
                     ?>
                 </ul>
             </div>
         </div>
         <?php
-            include("./includes/footer.php");
+        include("./includes/footer.php");
         ?>
     </div>
     <!-- bootstrap js link -->
