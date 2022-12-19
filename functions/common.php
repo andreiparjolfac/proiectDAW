@@ -334,7 +334,10 @@ function total_cart_price(){
         $sum+=$product_quantity*$product_price;
     }
 
-    echo "$sum";
+    return $sum;
 }
+
+
+
 
 ?>

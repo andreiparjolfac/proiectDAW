@@ -46,9 +46,18 @@ session_start();
                         <li class="nav-item">
                             <a class="nav-link" href="display_all.php">Products</a>
                         </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="user_registration.php">Register</a>
-                        </li>
+                        <?php
+                        if (!isset($_SESSION['username'])) {
+                            echo "                        <li class='nav-item'>
+                            <a class='nav-link' href='user_registration.php'>Register</a>
+                        </li>";
+                        } else {
+                            echo "                        <li class='nav-item'>
+                            <a class='nav-link' href='profile.php'>My account</a>
+                        </li>";
+                        }
+
+                        ?>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
@@ -68,13 +77,13 @@ session_start();
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
-            <?php
+                <?php
                 if (!isset($_SESSION['username'])) {
                     echo "                <li class='nav-item'>
                                     <a class='nav-link' href='user_login.php'>Welcome Guest</a>
                                 </li>";
                 } else {
-                    $username=$_SESSION['username'];
+                    $username = $_SESSION['username'];
                     echo "                <li class='nav-item'>
                                     <a class='nav-link' href='logout.php'>Welcome $username</a>
                                 </li>";
@@ -105,13 +114,13 @@ session_start();
             <div class="row">
                 <form action="cart.php" method="POST">
                     <table class="table table-bordered text-center">
-                            <?php
-                            global $con;
-                            $ip = getIPAddress();
-                            $result_query = mysqli_query($con, "select * from cart_details where ip_address='$ip'");
-                            $num_of_products = mysqli_num_rows($result_query);
-                            if($num_of_products>0){
-                                echo "                        
+                        <?php
+                        global $con;
+                        $ip = getIPAddress();
+                        $result_query = mysqli_query($con, "select * from cart_details where ip_address='$ip'");
+                        $num_of_products = mysqli_num_rows($result_query);
+                        if ($num_of_products > 0) {
+                            echo "                        
                                 <thead>
                                 <tr>
                                     <th>Product Title</th>
@@ -123,15 +132,15 @@ session_start();
                                 </tr>
                                 </thead>";
                             echo "<tbody>";
-                                while ($row = mysqli_fetch_assoc($result_query)) {
-                                        $product_id = $row['product_id'];
-                                        $product_quantity = $row['quantity'];
-                                        $product = mysqli_fetch_assoc(mysqli_query($con, "select * from products where product_id=$product_id"));
-                                        $product_title = $product['product_title'];
-                                        $product_image1 = $product['product_image1'];
-                                        $product_price = $product['product_price'];
-                                        $total_price = $product_quantity * $product_price;
-                                        echo "
+                            while ($row = mysqli_fetch_assoc($result_query)) {
+                                $product_id = $row['product_id'];
+                                $product_quantity = $row['quantity'];
+                                $product = mysqli_fetch_assoc(mysqli_query($con, "select * from products where product_id=$product_id"));
+                                $product_title = $product['product_title'];
+                                $product_image1 = $product['product_image1'];
+                                $product_price = $product['product_price'];
+                                $total_price = $product_quantity * $product_price;
+                                echo "
                                     <tr>
                                     <td>$product_title</td>
                                     <td><img src='./admin_area/product_images/$product_image1' class='cart_img' alt='$product_image1'></td>
@@ -143,41 +152,42 @@ session_start();
                                     </td>
                                 </tr>
                                     ";
-                                }
-                            }else{
-                                echo "<h2 class='text-danger text-center'>Cart is empty!</h2>";
                             }
-                            
-                            if (isset($_POST['update_cart'])) {
-                                $quantity = $_POST['quantity'];
-                                mysqli_query($con, "update cart_details set quantity = $quantity where ip_address='$ip' and product_id=$product_id");
-                                echo "<script>
+                        } else {
+                            echo "<h2 class='text-danger text-center'>Cart is empty!</h2>";
+                        }
+
+                        if (isset($_POST['update_cart'])) {
+                            $quantity = $_POST['quantity'];
+                            mysqli_query($con, "update cart_details set quantity = $quantity where ip_address='$ip' and product_id=$product_id");
+                            echo "<script>
                             window.open('cart.php','_self');
                             </script>";
-                            }
+                        }
 
-                            if (isset($_POST['remove_cart'])) {
-                                if (isset($_POST['checkeditems'])) {
-                                    $product_id_arr = $_POST['checkeditems'];
-                                    foreach($product_id_arr as $remove_id){
-                                        $result_delete=mysqli_query($con,"delete from cart_details where ip_address='$ip' and product_id=$remove_id");
-                                        if($result_delete){
-                                            echo "<script>
+                        if (isset($_POST['remove_cart'])) {
+                            if (isset($_POST['checkeditems'])) {
+                                $product_id_arr = $_POST['checkeditems'];
+                                foreach ($product_id_arr as $remove_id) {
+                                    $result_delete = mysqli_query($con, "delete from cart_details where ip_address='$ip' and product_id=$remove_id");
+                                    if ($result_delete) {
+                                        echo "<script>
                                             window.open('cart.php','_self');
                                             </script>";
-                                        }
                                     }
                                 }
                             }
+                        }
 
 
 
-                            ?>
+                        ?>
                         </tbody>
                     </table>
                     <?php
-                    if($num_of_products>0){
-                    echo "
+                    if ($num_of_products > 0) {
+                        $total_price = total_cart_price();
+                        echo "
                     <div class='d-flex mb-5'>
                         <h4 class='px-3'>Subtotal: <strong class='text-info'> $total_price </strong></h4>
                         <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Continue Shopping' name='continue_shopping'>
@@ -185,7 +195,7 @@ session_start();
                         <input type='submit' class='bg-info px-3 py-2 mx-3 border-0' value='Remove selected products' name='remove_cart'>
                     </div>
                     ";
-                    }else{
+                    } else {
                         echo "
                         <div class='d-flex mb-5'>
 
@@ -194,13 +204,13 @@ session_start();
                         </div>";
                     }
 
-                    if(isset($_POST['continue_shopping'])){
+                    if (isset($_POST['continue_shopping'])) {
                         echo "<script>
                         window.open('index.php','_self');
                         </script>";
                     }
 
-                    if(isset($_POST['checkout'])){
+                    if (isset($_POST['checkout'])) {
                         echo "<script>
                         window.open('checkout.php','_self');
                         </script>";
