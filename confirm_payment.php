@@ -1,11 +1,21 @@
 <?php
 include("./includes/connect.php");
 session_start();
-
+$order_id = 0;
 if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
-    $order_data = mysqli_fetch_assoc(mysqli_query($con,"select * from user_orders where order_id='$order_id'"));
+    $order_data = mysqli_fetch_assoc(mysqli_query($con, "select * from user_orders where order_id='$order_id'"));
+}
+if (isset($_POST['confirm_payment'])) {
+    $payment_mode = $_POST['payment_method'];
+    $result = mysqli_query($con, "insert into user_payments (order_id,payment_mode,date) values ($order_id,'$payment_mode',NOW())");
+    if($result){
+        mysqli_query($con,"update user_orders set order_status='completed' where order_id=$order_id");
+        echo "<script>alert('Payment Successful!');
+            window.open('profile.php?my_orders','_self');
+        </script>";
 
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -27,25 +37,25 @@ if (isset($_GET['order_id'])) {
         <form action="" method="POST">
             <div class="form-outline my-4 text-center w-50 m-auto">
                 <label for="invoice_number" class="form-label text-light">Invoice Number</label>
-                <input type="text" name="invoice_number" class="form-control w-50 m-auto" id="invoice_number" value="<?php 
-                echo $order_data['invoice_number'];
-                ?>">
+                <input type="text" name="invoice_number" class="form-control w-50 m-auto" id="invoice_number" value="<?php
+                                                                                                                        echo $order_data['invoice_number'];
+                                                                                                                        ?>">
             </div>
             <div class="form-outline my-4 text-center w-50 m-auto">
                 <label for="amount_due" class="form-label text-light">Amount Due</label>
                 <input type="text" name="amount_due" class="form-control w-50 m-auto" id="amount_due" value="<?php
-                echo $order_data['amount_due'];
-                ?>">
+                                                                                                                echo $order_data['amount_due'];
+                                                                                                                ?>">
             </div>
             <div class="form-outline my-4 text-center w-50 m-auto">
                 <label for="payment_method" class="form-label text-light">Payment method</label><br>
                 <select name="payment_method" id="payment_method" class="form-select w-50 m-auto">
-                    <option>Select Payment Method</option>
+                    <option>Pay offline</option>
                     <option>UPI</option>
                     <option>PayPal</option>
                     <option>Cash on Delivery</option>
                     <option>NetBanking</option>
-                    <option>Pay offline</option>
+
                 </select>
             </div>
             <div class="form-outline my-4 text-center w-50 m-auto">

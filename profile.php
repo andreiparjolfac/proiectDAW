@@ -93,8 +93,8 @@ if (!isset($_SESSION['username'])) {
                 } else {
                     $username=$_SESSION['username'];
                     echo "                <li class='nav-item'>
-                                    <a class='nav-link' href='logout.php'>Welcome $username</a>
-                                </li>";
+                    <a class='nav-link' href='profile.php'>Welcome $username</a>
+                    </li>";
                 }
                 if (!isset($_SESSION['username'])) {
                     echo "                <li class='nav-item'>
@@ -159,7 +159,7 @@ if (!isset($_SESSION['username'])) {
                 }else if(isset($_GET['my_orders'])){
                     include("my_orders.php");
                 }else if(isset($_GET['delete_account'])){
-
+                    include("delete_account.php");
                 }else{
                     $num_of_orders = mysqli_num_rows(mysqli_query($con,"select * from user_orders where user_id=$user_id and order_status='pending'"));
                     if($num_of_orders>0){

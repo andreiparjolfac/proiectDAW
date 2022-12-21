@@ -7,7 +7,7 @@ function getProducts()
     global $con;
     if (!isset($_GET['category'])) {
         if (!isset($_GET['brand'])) {
-            $select_query = "select * from products order by rand() limit 0,4";
+            $select_query = "select * from products where status='true' order by rand() limit 0,4";
             $result_query = mysqli_query($con, $select_query);
             while ($row = mysqli_fetch_assoc($result_query)) {
                 $product_id = $row['product_id'];
@@ -39,7 +39,7 @@ function get_unique_categories()
     global $con;
     if (isset($_GET['category'])) {
         $category_id = $_GET['category'];
-        $select_query = "select * from products where category_id=$category_id";
+        $select_query = "select * from products where category_id=$category_id and status='true'";
         $result_query = mysqli_query($con, $select_query);
         $num_of_rows = mysqli_num_rows($result_query);
         if ($num_of_rows > 0) {
@@ -75,7 +75,7 @@ function get_unique_brands()
     global $con;
     if (isset($_GET['brand'])) {
         $brand_id = $_GET['brand'];
-        $select_query = "select * from products where brand_id=$brand_id";
+        $select_query = "select * from products where brand_id=$brand_id and status='true'";
         $result_query = mysqli_query($con, $select_query);
         $num_of_rows = mysqli_num_rows($result_query);
         if ($num_of_rows > 0) {
@@ -148,7 +148,7 @@ function get_all_products()
     global $con;
     if (!isset($_GET['category'])) {
         if (!isset($_GET['brand'])) {
-            $select_query = "select * from products";
+            $select_query = "select * from products where status='true'";
             $result_query = mysqli_query($con, $select_query);
             while ($row = mysqli_fetch_assoc($result_query)) {
                 $product_id = $row['product_id'];
@@ -179,7 +179,7 @@ function search_product(){
     global $con;
     if(isset($_GET['search_data_product'])){
         $search_data = $_GET['search_data'];
-            $select_query = "select * from products where product_keywords like '%$search_data%'";
+            $select_query = "select * from products where product_keywords like '%$search_data%' and status='true'";
             $result_query = mysqli_query($con, $select_query);
             $num_of_rows = mysqli_num_rows($result_query);
             if($num_of_rows==0){
@@ -218,7 +218,7 @@ function view_details(){
     if (!isset($_GET['category'])) {
         if (!isset($_GET['brand'])) {
             $product_id = $_GET['product_id'];
-            $select_query = "select * from products where product_id=$product_id";
+            $select_query = "select * from products where product_id=$product_id and status='true'";
             $result_query = mysqli_query($con, $select_query);
             while ($row = mysqli_fetch_assoc($result_query)) {
                 $product_id = $row['product_id'];

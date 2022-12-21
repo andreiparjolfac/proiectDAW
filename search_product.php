@@ -86,8 +86,8 @@ session_start();
                 } else {
                     $username=$_SESSION['username'];
                     echo "                <li class='nav-item'>
-                                    <a class='nav-link' href='logout.php'>Welcome $username</a>
-                                </li>";
+                    <a class='nav-link' href='profile.php'>Welcome $username</a>
+                    </li>";
                 }
                 if (!isset($_SESSION['username'])) {
                     echo "                <li class='nav-item'>

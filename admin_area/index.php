@@ -1,3 +1,6 @@
+<?php
+include("./functions/common.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +12,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../style.css">
+    <style>
+        body{
+            overflow-x: hidden;
+        }
+        .footer{
+    position: inherit;
+    bottom: 0;
+}
+    </style>
 </head>
 
 <body>
@@ -41,14 +53,14 @@
                 </div>
                 <div class="button text-center">
                     <button class="my-3 border-0"><a href="insert_product.php" class="nav-link text-light bg-info my-1 p-2">Insert Product</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">View Products</a></button>
+                    <button class="border-0"><a href="index.php?view_products" class="nav-link text-light bg-info my-1 p-2">View Products</a></button>
                     <button class="border-0"><a href="index.php?insert_category" class="nav-link text-light bg-info my-1 p-2">Insert Category</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">View Categories</a></button>
+                    <button class="border-0"><a href="index.php?view_categories" class="nav-link text-light bg-info my-1 p-2">View Categories</a></button>
                     <button class="border-0"><a href="index.php?insert_brand" class="nav-link text-light bg-info my-1 p-2">Insert Brand</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">View Brands</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">All orders</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">All payments</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">List users</a></button>
+                    <button class="border-0"><a href="index.php?view_brands" class="nav-link text-light bg-info my-1 p-2">View Brands</a></button>
+                    <button class="border-0"><a href="index.php?list_orders" class="nav-link text-light bg-info my-1 p-2">All orders</a></button>
+                    <button class="border-0"><a href="index.php?list_payments" class="nav-link text-light bg-info my-1 p-2">All payments</a></button>
+                    <button class="border-0"><a href="index.php?list_users" class="nav-link text-light bg-info my-1 p-2">List users</a></button>
                     <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">Logout</a></button>
                 </div>
             </div>
@@ -60,6 +72,46 @@
             }
             if(isset($_GET['insert_brand'])){
                 include('insert_brand.php');
+            }
+            if(isset($_GET['view_products'])){
+                include("view_products.php");
+            }
+            if(isset($_GET['edit_product'])){
+                include("edit_product.php");
+            }
+            if(isset($_GET['delete_product'])){
+                include("delete_product.php");
+            }
+            if(isset($_GET['view_categories'])){
+                include("view_categories.php");
+            }
+            if(isset($_GET['view_brands'])){
+                include("view_brands.php");
+            }
+            if(isset($_GET['edit_category'])){
+                include("edit_category.php");
+            }
+            if(isset($_GET['edit_brand'])){
+                include("edit_brand.php");
+            }
+            if(isset($_GET['list_orders'])){
+                include("list_orders.php");
+            }
+            if(isset($_GET['list_payments'])){
+                include("list_payments.php");
+            }
+            if(isset($_GET['list_users'])){
+                include("list_users.php");
+            }
+            if(isset($_GET['delete_user'])){
+                $del_id = $_GET['delete_user'];
+                $result = mysqli_query($con,"update user_table set disabled='true' where user_id=$del_id");
+                if($result){
+                    echo "<script>
+                    alert('User deleted successfully!');
+                    window.open('index.php?list_users','_self');
+                    </script>";
+                }
             }
             ?>
         </div>

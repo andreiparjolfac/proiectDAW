@@ -55,6 +55,7 @@ if(isset($_POST['user_login'])){
     $row_count = mysqli_num_rows($result);
     $row_data = mysqli_fetch_assoc($result);
     $ip = getIPAddress();
+    if($row_data['disabled']=='false'){
     if($row_count>0){
         if(password_verify($user_password,$row_data['user_password'])){
             $_SESSION['username']=$user_username;
@@ -76,5 +77,8 @@ if(isset($_POST['user_login'])){
     }else{
         echo "<script>alert('Invalid UserName');</script>";
     }
+}else{
+    echo "<script>alert('The Account is currently disabled!');</script>";
+}
 }
 ?>

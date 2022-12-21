@@ -40,8 +40,12 @@
                     <td>".$row_data['total_products']."</td>
                     <td>".$row_data['invoice_number']."</td>
                     <td>".$row_data['order_date']."</td>
-                    <td>".$row_data['order_status']."</td>
-                    <td><a href='confirm_payment.php?order_id=".$row_data['order_id']."' class='text-light'>Confirm</a></td>
+                    <td>".$row_data['order_status']."</td>";
+                    if($row_data['order_status']=="pending")
+                    echo "<td><a href='confirm_payment.php?order_id=".$row_data['order_id']."' class='text-light'>Confirm</a></td>
+                    </tr>";
+                    else 
+                    echo "<td>Paid</td>
                     </tr>";
                 }
                 ?>
