@@ -1,5 +1,13 @@
 <?php
 include("./functions/common.php");
+session_start();
+if(!isset($_SESSION['admin_username'])){
+    echo "<script>window.open('admin_login.php','_self')</script>";
+}else{
+    $admin_username = $_SESSION['admin_username'];
+    $row_data = mysqli_fetch_assoc(mysqli_query($con,"select * from admin_table where admin_username='$admin_username'"));
+    $admin_image = $row_data['admin_image'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +40,7 @@ include("./functions/common.php");
                 <nav class="navbar navbar-expand-lg">
                     <ul class="navbar-nav ">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Welcome guest</a>
+                            <a href="#" class="nav-link">Welcome <?php echo $admin_username;?></a>
                         </li>
                     </ul>
                 </nav>
@@ -48,8 +56,8 @@ include("./functions/common.php");
         <div class="row">
             <div class="col-md-12 bg-secondary p-1 d-flex align-items-center">
                 <div class="p-3">
-                    <a href="#"><img src="../images/pineapple.jpeg" alt="profil" class="admin_image"></a>
-                    <p class="text-light text-center">Admin name</p>
+                    <a href="#"><img src="./admin_images/<?php echo $admin_image;?>" alt="profil" class="admin_image"></a>
+                    <p class="text-light text-center"><?php echo $admin_username;?></p>
                 </div>
                 <div class="button text-center">
                     <button class="my-3 border-0"><a href="insert_product.php" class="nav-link text-light bg-info my-1 p-2">Insert Product</a></button>
@@ -61,7 +69,7 @@ include("./functions/common.php");
                     <button class="border-0"><a href="index.php?list_orders" class="nav-link text-light bg-info my-1 p-2">All orders</a></button>
                     <button class="border-0"><a href="index.php?list_payments" class="nav-link text-light bg-info my-1 p-2">All payments</a></button>
                     <button class="border-0"><a href="index.php?list_users" class="nav-link text-light bg-info my-1 p-2">List users</a></button>
-                    <button class="border-0"><a href="" class="nav-link text-light bg-info my-1 p-2">Logout</a></button>
+                    <button class="border-0"><a href="logout.php" class="nav-link text-light bg-info my-1 p-2">Logout</a></button>
                 </div>
             </div>
         </div>
