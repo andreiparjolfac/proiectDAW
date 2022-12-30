@@ -34,7 +34,9 @@ if (!empty($_SESSION['_contact_form_success'])) {
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
-
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
 
     <div class="container-fluid p-0">

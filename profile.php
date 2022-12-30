@@ -25,7 +25,9 @@ if (!isset($_SESSION['username'])) {
 
     <link rel="stylesheet" href="style.css">
 </head>
-
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
 
     <div class="container-fluid p-0">

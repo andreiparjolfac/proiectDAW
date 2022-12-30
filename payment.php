@@ -20,14 +20,17 @@ include("./functions/common.php");
         }
     </style>
 </head>
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
-    <?php
-    $user_ip = getIPAddress();
-    $get_user = "select * from user_table where user_ip = '$user_ip'";
+<?php
+    //$user_ip = getIPAddress();
+    $username = $_SESSION['username'];
+    $get_user = "select * from user_table where user_username = '$username'";
     $result = mysqli_query($con,$get_user);
     $row_data = mysqli_fetch_assoc($result);
     $user_id = $row_data['user_id'];
-
     ?>
     <div class="container">
         <h2 class="text-center text-info">

@@ -26,7 +26,9 @@ session_start();
         }
     </style>
 </head>
-
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
 
     <div class="container-fluid p-0">

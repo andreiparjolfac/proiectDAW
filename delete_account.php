@@ -24,6 +24,9 @@ if(password_verify($user_password,$row_data['user_password'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Account</title>
 </head>
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
     <h3 class="text-center text-danger mb-4">
         Delete Account

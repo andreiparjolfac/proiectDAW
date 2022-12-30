@@ -35,7 +35,9 @@ if(isset($_POST['user_update'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Account</title>
 </head>
-
+<?php
+include("./googleanalitycs.php");
+?>
 <body>
     <h3 class="text-center text-success mb-4">Edit Account</h3>
     <form action="" method="POST" enctype="multipart/form-data">
