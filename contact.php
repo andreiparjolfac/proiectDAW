@@ -1,7 +1,21 @@
 <?php
 include('./includes/connect.php');
 include('./functions/common.php');
+require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__.'/config.php';
+
 session_start();
+
+if (!empty($_SESSION['_contact_form_error'])) {
+    $error = $_SESSION['_contact_form_error'];
+    unset($_SESSION['_contact_form_error']);
+}
+
+if (!empty($_SESSION['_contact_form_success'])) {
+    $success = true;
+    unset($_SESSION['_contact_form_success']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,13 +25,13 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce Website</title>
+    <title>Contact Us</title>
     <!-- bootstrap css link -->
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <!-- font awsome link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -53,22 +67,22 @@ session_start();
 
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="./contact.php">Contact</a>
+                            <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-shopping"></i><sup><?php
-                            echo cart_item_num();
-                            ?></sup></a>
+                                                                                                                echo cart_item_num();
+                                                                                                                ?></sup></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Total price: <?php
-                            echo total_cart_price();
-                            ?></a>
+                                                                       echo total_cart_price();
+                                                                        ?></a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Search</button>
+                    <form class="d-flex" role="search" action="search_product.php" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
+                        <input type="submit" value="Search" class="btn btn-outline-light" name="search_data_product">
                     </form>
                 </div>
             </div>
@@ -77,9 +91,10 @@ session_start();
         <?php
         cart();
         ?>
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
-            <?php
+                <?php
                 if (!isset($_SESSION['username'])) {
                     echo "                <li class='nav-item'>
                                     <a class='nav-link' href='user_login.php'>Welcome Guest</a>
@@ -104,53 +119,63 @@ session_start();
             </ul>
         </nav>
 
-        <div class="bg-light">
-            <h3 class="text-center">
-                e-Library
-            </h3>
-            <p class="text-center">
-                project is a WIP
-            </p>
+
+        <h1 class="text-center">
+        Contact Us
+    </h1>
+    <?php
+                    if (!empty($success)) {
+                        ?>
+                        <div class="alert alert-success">Your message was sent successfully!</div>
+                        <?php
+                    }
+                    ?>
+
+                    <?php
+                    if (!empty($error)) {
+                        ?>
+                        <div class="alert alert-danger"><?= $error ?></div>
+                        <?php
+                    }
+                    ?>
+        <div class="row pb-5">
+            
+        <form action="submit.php" method="POST"  class="w-50 m-auto">
+        <div class="form-outline mb-4">
+            <label for="contact_email" class="form-label">Email</label>
+            <input value="<?php
+            if(isset($_SESSION['username'])){
+                $username = $_SESSION['username'];
+                echo mysqli_fetch_assoc(mysqli_query($con,"select * from user_table where user_username='$username'"))['user_email'];
+            }
+            ?>" type="email" class="form-control" required="required" name="contact_email" id="contact_email">        
+        </div>
+        <div class="form-outline mb-4">
+            <label for="contact_category" class="form-label">Contact Category</label>
+            <select name="contact_category" id="contact_category" class="form-select">
+                <option>Product Suggestion</option>
+                <option>Complaint</option>
+                <option>Other</option>
+            </select>
         </div>
 
-        <div class="row">
-            <div class="col-md-10">
-                <div class="row">
-                    <?php
-                    get_all_products();
-                    get_unique_categories();
-                    get_unique_brands();
-                    ?>
-                </div>
-            </div>
-            <div class="col-md-2 bg-secondary p-0">
-                <ul class="navbar-nav me-auto text-center">
-                    <li class="nav-item bg-info">
-                        <a href="#" class="nav-link text-light">
-                            <h4>
-                                Brands
-                            </h4>
-                        </a>
-                    </li>
-                    <?php
-                    getBrands();
-                    ?>
+        <div class="form-outline mb-4">
+            <label for="contact_subject" class="form-label">Subject</label>
+            <input type="text" class="form-control" required="required" name="contact_subject" id="contact_subject">        
+        </div>
 
-                </ul>
+        <div class="form-outline mb-4">
+            <label for="contact_message" class="form-label">Message</label>
+            <textarea class="form-control" required="required" name="contact_message" id="contact_message" rows="4" cols="50">    
+            </textarea>    
+        </div>
+        <div class="form-group text-center">
+                            <div class="g-recaptcha" data-sitekey="<?= CONTACTFORM_RECAPTCHA_SITE_KEY ?>"></div>
+                        </div>
+        <input type="submit" class="btn btn-info px-3 py-2" value="Send" name="send_contact" >
+    </div>
+    </form>
 
-                <ul class="navbar-nav me-auto text-center">
-                    <li class="nav-item bg-info">
-                        <a href="#" class="nav-link text-light">
-                            <h4>
-                                Categories
-                            </h4>
-                        </a>
-                    </li>
-                    <?php
-                    getCategories();
-                    ?>
-                </ul>
-            </div>
         </div>
         <?php
         include("./includes/footer.php");
@@ -162,3 +187,4 @@ session_start();
 </body>
 
 </html>
+

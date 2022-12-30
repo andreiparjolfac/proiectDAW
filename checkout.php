@@ -52,7 +52,7 @@ session_start();
 
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="./contact.php">Contact</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search" action="search_product.php" method="GET">
