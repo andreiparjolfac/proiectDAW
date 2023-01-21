@@ -9,6 +9,7 @@ Administratorul poate sa creeze ,editeze si sa stearga produsele din magazin , p
 Exista un formular de contact pentru plangeri/sugestii ce foloseste smtp gmail , cu protectie impotriva spam-ului folosind Google reCaptcha. <br>
 Aplicatia contine mai multe pagini dinamice cu legaturi intre ele . De exemplu un administrator poate sa creeze un produs nou iar restul utilizatorilor il pot vedea imediat.<br>
 La fiecare login respectiv logout se initializeaza respectiv se termina o sesiune iar paginile pe care utilizatorul le vizualizeaza se schimba conform sesiunii.De asemenea sunt anumite pagini pe care utlizatorul nu le poate vedea decat daca este inregistrat. <br>
+Atunci cand un admin sterge un utilizator sau un produs acesta apare sters de pe site insa in baza de date este doar dezactivat (coloana DISABLED - BOOLEAN).Pe site sunt afisati doar utilizatorii ce au DISABLED = FALSE. <br>
 
 <b>Baza de date folosita</b> <br>
 
