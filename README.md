@@ -17,6 +17,53 @@ Descrierea entităților, incluzând precizarea cheii primare. <br>
   <thead>
     <th>Entitate</th>
     <th>Cheie Primara</th>
-    <th colspan="3">Descriere</th>
+    <th>Descriere</th>
   </thead>
+  <tbody>
+    <tr>
+      <td>brands</td>
+      <td>brand_id</td>
+      <td>Diverse branduri ale furnizorilor</td>
+    </tr>
+    <tr>
+      <td>categories</td>
+      <td>category_id</td>
+      <td>Categoriile din care fac parte produsele vandute</td>
+    </tr>
+    <tr>
+      <td>Products</td>
+      <td>product_id</td>
+      <td>Produsele propuse spre vanzare</td>
+    </tr>
+    <tr>
+      <td>brands</td>
+      <td>brand_id</td>
+      <td>Diverse branduri ale furnizorilor</td>
+    </tr>
+    <tr>
+      <td>admin_table</td>
+      <td>admin_id</td>
+      <td>Contine date despre administratori</td>
+    </tr>
+    <tr>
+      <td>user_table</td>
+      <td>user_id</td>
+      <td>Contine date despre utilizatorii inregistrati</td>
+    </tr>
+    <tr>
+      <td>cart_details</td>
+      <td>Compusa(product_id & ip & user_id)</td>
+      <td>Contine date despre cosul virtual (ce si cate produse?)</td>
+    </tr>
+    <tr>
+      <td>user_orders</td>
+      <td>order_id</td>
+      <td>Contine date despre comenzile utilizatorilor</td>
+    </tr>
+    <tr>
+      <td>user_payments</td>
+      <td>payment_id</td>
+      <td>Contine date despre platile inregistrate pentru comenzi</td>
+    </tr>
+  </tbody>
 </table>
