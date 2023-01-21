@@ -9,3 +9,14 @@ Administratorul poate sa creeze ,editeze si sa stearga produsele din magazin , p
 Exista un formular de contact pentru plangeri/sugestii ce foloseste smtp gmail , cu protectie impotriva spam-ului folosind Google reCaptcha. <br>
 Aplicatia contine mai multe pagini dinamice cu legaturi intre ele . De exemplu un administrator poate sa creeze un produs nou iar restul utilizatorilor il pot vedea imediat.<br>
 La fiecare login respectiv logout se initializeaza respectiv se termina o sesiune iar paginile pe care utilizatorul le vizualizeaza se schimba conform sesiunii.De asemenea sunt anumite pagini pe care utlizatorul nu le poate vedea decat daca este inregistrat. <br>
+
+<b>Baza de date folosita</b> <br>
+
+Descrierea entităților, incluzând precizarea cheii primare. <br>
+<table>
+  <thead>
+    <th>Entitate</th>
+    <th>Cheie Primara</th>
+    <th colspan="3">Descriere</th>
+  </thead>
+</table>
